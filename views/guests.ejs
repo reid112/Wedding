@@ -1,0 +1,37 @@
+<%- include("header") -%>
+
+<div class="main-container">
+
+	<section>
+		<div class="container">
+      <div class="row">
+        <p class="bold col-sm-12">
+          Attending:
+        </p>
+      </div>
+			<div class="row">
+				<ol class="col-sm-12">
+          <% attending.forEach(function(rsvp) { %>
+            <li><%= rsvp.names %> | <%= rsvp.numberAttending %> | <%= rsvp.notes %></li>
+          <% }); %>
+        </ol>
+			</div>
+
+      <br/><br/>
+
+      <div class="row">
+        <p class="bold col-sm-12">
+          Not Attending:
+        </p>
+      </div>
+      <div class="row">
+				<ol class="col-sm-12">
+          <% notAttending.forEach(function(rsvp) { %>
+            <li><%= rsvp.names %></li>
+          <% }); %>
+        </ol>
+			</div>
+		</div>
+	</section>
+
+<%- include("footer") -%>
