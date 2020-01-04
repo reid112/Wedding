@@ -3,6 +3,7 @@ const bodyParser = require("body-parser");
 const mongoose = require("mongoose");
 const nodemailer = require('nodemailer');
 const uuid = require('uuid/v1');
+const bcrypt = require('bcrypt');
 
 if (process.env.NODE_ENV !== 'production') {
   require('dotenv').config();
@@ -119,7 +120,7 @@ app.post("/", (req, res) => {
   });
 });
 
-app.get("/guests-hidden", (req, res) => {
+app.get("/guests", (req, res) => {
   Rsvp.find({}, function(err, rsvps) {
       var attending = [];
       var notAttending = [];
@@ -139,11 +140,11 @@ app.get("/guests-hidden", (req, res) => {
     });
 });
 
-app.get("/invites-hidden", (req, res) => {
+app.get("/invites", (req, res) => {
   res.render("invites")
 });
 
-app.post("/invites-hidden", (req, res) => {
+app.post("/invites", (req, res) => {
   const guid = uuid();
   const email = req.body.email;
   const names = req.body.names;
@@ -156,12 +157,14 @@ app.post("/invites-hidden", (req, res) => {
     number : number
   };
 
+console.log(req.body);
+
   Invite.create(invite, function(err, invite) {
       if (err){
           console.log(err);
           res.send(err)
       } else {
-          res.redirect("/invites-hidden");
+          res.json({success : "Success", status : 200});
           console.log(invite);
       }
   });
