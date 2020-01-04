@@ -134,11 +134,40 @@ router.get("/invites", checkAuthenticated, async (req, res) => {
   }
 });
 
-router.get("/send-invite", checkAuthenticated, (req, res) => {
-  res.render("sendInvite");
+router.post("/send-invites", checkAuthenticated, async (req, res) => {
+  try {
+    const invites = await Invite.find({});
+
+    const transporter = nodemailer.createTransport({
+     service: 'gmail',
+     auth: {
+            user: process.env.GMAIL_USER,
+            pass: process.env.GMAIL_PASS
+        }
+    });
+
+    invites.forEach(function (invite) {
+      const message = {
+          from: 'rsvp@brittaniandriley.com',
+          to: invite.email,
+          subject: 'Wedding Invite - Brittani and Riley!',
+          text: invite.names +',\n\nYou are invited to our wedding! Please click the link below for the wedding details and use the form on the website to RSVP.\n\n If you have any questions, feel free to reply to this email! We hope to see you there!\n\n' + process.env.HOST + '/invite/' + invite.guid + '\n\nBrittani and Riley'
+      };
+
+      transporter.sendMail(message, function(err, info) {});
+    });
+
+    res.json({success : "Success", status : 200});
+  } catch (e) {
+    res.redirect("guests");
+  }
 });
 
-router.post("/send-invite", checkAuthenticated, (req, res) => {
+router.get("/add-invite", checkAuthenticated, (req, res) => {
+  res.render("addInvite");
+});
+
+router.post("/add-invite", checkAuthenticated, (req, res) => {
   const guid = uuid();
   const email = req.body.email;
   const names = req.body.names;

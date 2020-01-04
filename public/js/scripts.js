@@ -143,7 +143,22 @@ $(document).ready(function() {
     // Form code
 
     $('.send-invites').click(function() {
-      console.log("clicked");
+      if (confirm("This will send emails to everyone on the invite list.  Do you want to continue?")) {
+        jQuery.ajax({
+            type: "POST",
+            url: "/send-invites",
+            success: function(response) {
+                if(response.status == 200){
+                  console.log("done");
+                } else {
+                  console.log("error");
+                }
+            },
+            error: function(errorObject, errorText, errorHTTP) {
+                console.log("error 2");
+            }
+        });
+      }
     });
 
     $('form.form-invite').submit(function(e) {
@@ -177,7 +192,7 @@ $(document).ready(function() {
 
             jQuery.ajax({
                 type: "POST",
-                url: "/send-invite",
+                url: "/add-invite",
                 data: $(this).serialize(),
                 datatype: "json",
                 success: function(response) {
