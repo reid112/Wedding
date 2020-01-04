@@ -147,11 +147,13 @@ router.post("/send-invites", checkAuthenticated, async (req, res) => {
     });
 
     invites.forEach(function (invite) {
+      const url = process.env.HOST + '/invite/' + invite.guid
+
       const message = {
           from: 'rsvp@brittaniandriley.com',
           to: invite.email,
           subject: 'Wedding Invite - Brittani and Riley!',
-          text: invite.names +',\n\nYou are invited to our wedding! Please click the link below for the wedding details and use the form on the website to RSVP.\n\n If you have any questions, feel free to reply to this email! We hope to see you there!\n\n' + process.env.HOST + '/invite/' + invite.guid + '\n\nBrittani and Riley'
+          html: invite.names +",<br/><br/>You are invited to our wedding! Please visit <a href='" + url + "'>BrittaniAndRiley.com</a> for the wedding details and use the form on the website to RSVP.<br/><br/> If you have any questions, feel free to reply to this email! <br/><br/>We hope to see you there!<br/>Brittani and Riley"
       };
 
       transporter.sendMail(message, function(err, info) {});
@@ -159,7 +161,8 @@ router.post("/send-invites", checkAuthenticated, async (req, res) => {
 
     res.json({success : "Success", status : 200});
   } catch (e) {
-    res.redirect("guests");
+    console.log(e);
+    res.json({error : "Error", status : 500});
   }
 });
 

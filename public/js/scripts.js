@@ -151,7 +151,7 @@ $(document).ready(function() {
                 if(response.status == 200){
                   console.log("done");
                 } else {
-                  console.log("error");
+                  console.log(response);
                 }
             },
             error: function(errorObject, errorText, errorHTTP) {
