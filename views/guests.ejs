@@ -12,7 +12,7 @@
 			<div class="row">
 				<ol class="col-sm-12">
           <% attending.forEach(function(rsvp) { %>
-            <li><%= rsvp.names %> | <%= rsvp.numberAttending %> | <%= rsvp.notes %></li>
+            <li><%= rsvp.names %> | <%= rsvp.numberAttending %> | <%= rsvp.notes %> | <%= rsvp.guid %></li>
           <% }); %>
         </ol>
 			</div>

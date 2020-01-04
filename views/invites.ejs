@@ -12,7 +12,8 @@
 			<div class="row">
 				<ol class="col-sm-12">
           <% invites.forEach(function(invite) { %>
-            <li><%= invite.names %> | <%= invite.email %> | <%= invite.number %></li>
+            <% const rsvp = (locals.rsvps) ? locals.rsvps.find(rsvp => rsvp.guid === invite.guid) : null %>
+            <li><%= invite.names %> | <%= invite.email %> | <%= invite.number %> | <a href="<%=host%>/invite/<%= invite.guid %>">Invite</a> | <%= rsvp ? rsvp.guid : null  %></li>
           <% }); %>
         </ol>
 			</div>

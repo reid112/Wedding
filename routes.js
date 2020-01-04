@@ -128,7 +128,9 @@ router.get("/guests", checkAuthenticated, (req, res) => {
 router.get("/invites", checkAuthenticated, async (req, res) => {
   try {
     const invites = await Invite.find({});
-    res.render("invites", {invites: invites});
+    const rsvps = await Rsvp.find();
+    console.log(rsvps);
+    res.render("invites", {invites: invites, rsvps: rsvps, host: process.env.HOST});
   } catch (e) {
     res.redirect("guests");
   }
