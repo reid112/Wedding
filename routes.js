@@ -1,6 +1,7 @@
 const express = require('express');
 const nodemailer = require('nodemailer');
 const passport = require('passport');
+const uuid = require('uuid/v1');
 const router = express.Router();
 
 const User = require('./models/User');

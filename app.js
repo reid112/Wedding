@@ -6,7 +6,6 @@ const express = require("express");
 const app = express();
 const bodyParser = require("body-parser");
 const mongoose = require("mongoose");
-const uuid = require('uuid/v1');
 const passport = require('passport');
 const flash = require('express-flash');
 const session = require('express-session');
