@@ -142,6 +142,10 @@ $(document).ready(function() {
 
     // Form code
 
+    $('.send-invites').click(function() {
+      console.log("clicked");
+    });
+
     $('form.form-invite').submit(function(e) {
 
         // return false so form submits through jQuery rather than reloading page.
@@ -173,7 +177,7 @@ $(document).ready(function() {
 
             jQuery.ajax({
                 type: "POST",
-                url: "/invites",
+                url: "/send-invite",
                 data: $(this).serialize(),
                 datatype: "json",
                 success: function(response) {

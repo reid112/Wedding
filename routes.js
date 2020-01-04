@@ -125,11 +125,20 @@ router.get("/guests", checkAuthenticated, (req, res) => {
     });
 });
 
-router.get("/invites", checkAuthenticated, (req, res) => {
-  res.render("invites")
+router.get("/invites", checkAuthenticated, async (req, res) => {
+  try {
+    const invites = await Invite.find({});
+    res.render("invites", {invites: invites});
+  } catch (e) {
+    res.redirect("guests");
+  }
 });
 
-router.post("/invites", checkAuthenticated, (req, res) => {
+router.get("/send-invite", checkAuthenticated, (req, res) => {
+  res.render("sendInvite");
+});
+
+router.post("/send-invite", checkAuthenticated, (req, res) => {
   const guid = uuid();
   const email = req.body.email;
   const names = req.body.names;
