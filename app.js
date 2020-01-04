@@ -1,174 +1,43 @@
-const express = require("express");
-const bodyParser = require("body-parser");
-const mongoose = require("mongoose");
-const nodemailer = require('nodemailer');
-const uuid = require('uuid/v1');
-const bcrypt = require('bcrypt');
-
 if (process.env.NODE_ENV !== 'production') {
   require('dotenv').config();
 }
 
+const express = require("express");
 const app = express();
+const bodyParser = require("body-parser");
+const mongoose = require("mongoose");
+const uuid = require('uuid/v1');
+const passport = require('passport');
+const flash = require('express-flash');
+const session = require('express-session');
+const methodOverride = require('method-override');
+const initializePassport = require('./passport-config')
+
+const User = require('./models/User');
+
+initializePassport(
+  passport,
+  username => User.findOne({username: username}),
+  id => User.findOne({user_id: id})
+)
 
 app.set('view engine', 'ejs');
 
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(express.static("public"));
+app.use(flash());
+app.use(session({
+  secret: process.env.SESSION_SECRET,
+  resave: false,
+  saveUninitialized: false
+}));
+app.use(passport.initialize());
+app.use(passport.session());
+app.use(methodOverride('_method'));
+app.use(require('./routes'));
 
 const url = process.env.DB_URL;
 mongoose.connect(url, {useUnifiedTopology: true, useNewUrlParser: true,});
-
-const rsvpSchema = {
-  email: {
-    type: String,
-    required: true
-  },
-  names: {
-    type: String,
-    required: true
-  },
-  numberAttending: {
-    type: Number,
-    required: true
-  },
-  attending: {
-    type: Boolean,
-    required: true
-  },
-  notes: String
-};
-
-const inviteSchema = {
-  guid: {
-    type: String,
-    required: true
-  },
-  email: {
-    type: String,
-    required: true
-  },
-  names: {
-    type: String,
-    required: true
-  },
-  number: {
-    type: Number,
-    required: true
-  }
-};
-
-const Rsvp = mongoose.model("Rsvp", rsvpSchema);
-const Invite = mongoose.model("Invite", inviteSchema);
-
-app.get("/", (req, res) => {
-  res.render("home")
-});
-
-app.post("/", (req, res) => {
-  const email = req.body.email;
-  const names = req.body.names;
-  const numberAttending = req.body.numberAttending;
-  const rsvpString = req.body.rsvp;
-  const notes = req.body.notes;
-
-  let rsvpBool = false
-
-  if (rsvpString == "attending") {
-    rsvpBool = true
-  }
-
-  const rsvp = {
-    email : email,
-    names : names,
-    numberAttending : numberAttending,
-    attending : rsvpBool,
-    notes : notes
-  };
-
-  const transporter = nodemailer.createTransport({
-   service: 'gmail',
-   auth: {
-          user: process.env.GMAIL_USER,
-          pass: process.env.GMAIL_PASS
-      }
-  });
-
-  const message = {
-      from: 'rsvp@brittaniandriley.com',
-      to: 'brittaniandriley@gmail.com',
-      subject: 'New RSVP!',
-      text: 'Email: ' + email + '\nNames: ' + names + '\nAttending: ' + rsvpString + '\nNumber: ' + numberAttending + '\nNotes: ' + notes
-  };
-
-  transporter.sendMail(message, function(err, info) {
-      if (err) {
-        console.log(err)
-      } else {
-        console.log(info);
-      }
-  });
-
-  Rsvp.create(rsvp, function(err, rsvp) {
-      if (err){
-          console.log(err);
-          res.send(err)
-      } else {
-          res.json({success : "Success", status : 200});
-          console.log(rsvp);
-      }
-  });
-});
-
-app.get("/guests", (req, res) => {
-  Rsvp.find({}, function(err, rsvps) {
-      var attending = [];
-      var notAttending = [];
-
-      rsvps.forEach(function(rsvp) {
-        if (rsvp.attending) {
-          attending.push(rsvp);
-        } else {
-          notAttending.push(rsvp);
-        }
-      });
-
-      res.render("guests", {
-            attending: attending,
-            notAttending: notAttending
-        })
-    });
-});
-
-app.get("/invites", (req, res) => {
-  res.render("invites")
-});
-
-app.post("/invites", (req, res) => {
-  const guid = uuid();
-  const email = req.body.email;
-  const names = req.body.names;
-  const number = req.body.number;
-
-  const invite = {
-    guid : guid,
-    email : email,
-    names : names,
-    number : number
-  };
-
-console.log(req.body);
-
-  Invite.create(invite, function(err, invite) {
-      if (err){
-          console.log(err);
-          res.send(err)
-      } else {
-          res.json({success : "Success", status : 200});
-          console.log(invite);
-      }
-  });
-});
 
 let port = process.env.PORT;
 if (port == null || port == "") {

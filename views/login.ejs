@@ -1,0 +1,23 @@
+<%- include("header") -%>
+
+<div class="main-container">
+
+	<section class="rsvp rsvp-2">
+		<div class="container">
+			<div class="row">
+				<div class="col-sm-12 text-center">
+					<div class="form-wrapper">
+						<form method="POST" action="/login">
+							<div class="form-section">
+								<input type="text" name="username" class="validate-required" placeholder="Username">
+								<input type="password" name="password" class="validate-required" placeholder="Password">
+							</div>
+							<input type="submit" value="Login">
+						</form>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+
+<%- include("footer") -%>
