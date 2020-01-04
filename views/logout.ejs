@@ -1,3 +1,16 @@
-<form action="/logout?_method=DELETE" method="POST">
-  <button type="submit">Log Out</button>
-</form>
+<%- include("authHeader") -%>
+
+<div class="main-container">
+
+	<section>
+    <div class="row">
+      <div class="col-xs-12 text-center">
+        <form action="/logout?_method=DELETE" method="POST">
+          <button type="submit">Log Out</button>
+        </form>
+      </div>
+    </div>
+  </section>
+</div>
+
+<%- include("footer") -%>
