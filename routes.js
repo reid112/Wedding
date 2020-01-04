@@ -13,62 +13,96 @@ router.use(function timeLog(req, res, next) {
 });
 
 router.get("/", (req, res) => {
-  res.render("home")
+  res.redirect("/login");
 });
 
-router.post("/", (req, res) => {
+router.get("/invite/:guid", async (req, res) => {
+  const guid = req.params.guid;
+
+  try {
+    const inviteQuery = await Invite.findOne({guid: guid});
+    const rsvpQuery = await Rsvp.findOne({guid: guid});
+
+    const invite = (inviteQuery != null) ? inviteQuery.toObject() : null;
+    const rsvp = (rsvpQuery != null) ? rsvpQuery.toObject() : null;
+
+    if (invite == null) {
+      res.send("");
+    } else {
+      res.render("home", {rsvp: rsvp, guid: invite.guid, names: invite.names, number: invite.number})
+    }
+  } catch (e) {
+    res.send("");
+    console.log(e);
+  }
+});
+
+router.post("/rsvp", async (req, res) => {
+  const guid = req.body.guid;
+  const name = req.body.name;
   const email = req.body.email;
-  const names = req.body.names;
-  const numberAttending = req.body.numberAttending;
   const rsvpString = req.body.rsvp;
+  const numberAttending = req.body.numberAttending;
+  const names = req.body.names;
   const notes = req.body.notes;
 
-  let rsvpBool = false
+  try {
+    const rsvpQuery = await Rsvp.findOne({guid: guid});
+    const currentRsvp = (rsvpQuery != null) ? rsvpQuery.toObject() : null;
 
-  if (rsvpString == "attending") {
-    rsvpBool = true
+    let rsvpBool = false
+
+    if (rsvpString == "attending") {
+      rsvpBool = true
+    }
+
+    const rsvp = {
+      guid : guid,
+      name : name,
+      email : email,
+      attending : rsvpBool,
+      numberAttending : numberAttending,
+      names : names,
+      notes : notes
+    };
+
+    const transporter = nodemailer.createTransport({
+     service: 'gmail',
+     auth: {
+            user: process.env.GMAIL_USER,
+            pass: process.env.GMAIL_PASS
+        }
+    });
+
+    const message = {
+        from: 'rsvp@brittaniandriley.com',
+        to: 'brittaniandriley@gmail.com',
+        subject: (currentRsvp == null) ? 'New RSVP!' : 'Updated RSVP!',
+        text: 'Email: ' + email + '\nNames: ' + names + '\nAttending: ' + rsvpString + '\nNumber: ' + numberAttending + '\nNotes: ' + notes
+    };
+
+    transporter.sendMail(message, function(err, info) {});
+
+    if (currentRsvp == null) {
+      Rsvp.create(rsvp, function(err, rsvp) {
+          if (err){
+              res.send(err)
+          } else {
+              res.json({success : "Success", status : 200});
+          }
+      });
+    } else {
+      Rsvp.replaceOne(rsvp, function(err, rsvp) {
+          if (err){
+              res.send(err)
+          } else {
+              res.json({success : "Success", status : 200});
+          }
+      });
+    }
+  } catch (e) {
+    res.send(err)
   }
-
-  const rsvp = {
-    email : email,
-    names : names,
-    numberAttending : numberAttending,
-    attending : rsvpBool,
-    notes : notes
-  };
-
-  const transporter = nodemailer.createTransport({
-   service: 'gmail',
-   auth: {
-          user: process.env.GMAIL_USER,
-          pass: process.env.GMAIL_PASS
-      }
-  });
-
-  const message = {
-      from: 'rsvp@brittaniandriley.com',
-      to: 'brittaniandriley@gmail.com',
-      subject: 'New RSVP!',
-      text: 'Email: ' + email + '\nNames: ' + names + '\nAttending: ' + rsvpString + '\nNumber: ' + numberAttending + '\nNotes: ' + notes
-  };
-
-  transporter.sendMail(message, function(err, info) {
-      if (err) {
-        console.log(err)
-      } else {
-        console.log(info);
-      }
-  });
-
-  Rsvp.create(rsvp, function(err, rsvp) {
-      if (err){
-          console.log(err);
-          res.send(err)
-      } else {
-          res.json({success : "Success", status : 200});
-          console.log(rsvp);
-      }
-  });
 });
 
 router.get("/guests", checkAuthenticated, (req, res) => {

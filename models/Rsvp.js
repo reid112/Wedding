@@ -3,22 +3,24 @@ var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
 const rsvpSchema = {
+  guid: {
+    type: String,
+    required: true
+  },
+  name: {
+    type: String,
+    required: true
+  },
   email: {
     type: String,
-    required: true
-  },
-  names: {
-    type: String,
-    required: true
-  },
-  numberAttending: {
-    type: Number,
     required: true
   },
   attending: {
     type: Boolean,
     required: true
   },
+  names: String,
+  numberAttending: Number,
   notes: String
 };
 

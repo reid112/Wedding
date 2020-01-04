@@ -1287,6 +1287,23 @@ input[type="submit"]:focus {
   margin: 0 auto;
   display: inline-block;
 }
+.rsvp form input[type="password"] {
+  height: 55px;
+  background: #fcfcfc;
+  border: 1px solid #d6d6d6;
+  width: 100%;
+  padding: 0 8px;
+  text-align: center;
+  font-size: 12px;
+  line-height: 20px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  margin-right: -2px;
+  font-family: 'Lato';
+}
+.rsvp form input[type="password"]:focus {
+  outline: none;
+}
 .rsvp form input[type="text"] {
   height: 55px;
   background: #fcfcfc;
@@ -1297,7 +1314,6 @@ input[type="submit"]:focus {
   font-size: 12px;
   line-height: 20px;
   font-weight: 700;
-  text-transform: uppercase;
   letter-spacing: 2px;
   margin-right: -2px;
   font-family: 'Lato';
@@ -1315,7 +1331,6 @@ input[type="submit"]:focus {
   font-size: 12px;
   line-height: 20px;
   font-weight: 700;
-  text-transform: uppercase;
   letter-spacing: 2px;
   margin-right: -2px;
   font-family: 'Lato';
@@ -1333,7 +1348,6 @@ input[type="submit"]:focus {
   font-size: 12px;
   line-height: 20px;
   font-weight: 700;
-  text-transform: uppercase;
   letter-spacing: 2px;
   margin-right: -2px;
   font-family: 'Lato';
@@ -1348,7 +1362,6 @@ input[type="submit"]:focus {
   min-width: 160px;
   height: 55px;
   line-height: 53px;
-  text-transform: uppercase;
   font-family: "Lato", "Helvetica Neue", Helvetica, Arial, sans-serif;
   font-weight: 700;
   padding: 0;
@@ -1382,19 +1395,19 @@ input[type="submit"]:focus {
   margin-bottom: 60px;
 }
 .rsvp-2 form input[type="text"] {
-  margin-bottom: 5px;
+  margin: 5px 0;
 }
 .rsvp-2 form input[type="email"] {
-  margin-bottom: 5px;
+  margin: 5px 0;
 }
 .rsvp-2 form input[type="number"] {
-  margin-bottom: 5px;
+  margin: 5px 0;
 }
 .rsvp-2 .form-wrapper {
   width: 475px;
   margin: 0 auto;
   background: #fcfcfc;
-  padding: 60px 0;
+  padding: 20px 0;
 }
 .rsvp-2 .form-section {
   margin-bottom: 40px;

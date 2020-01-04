@@ -128,18 +128,17 @@ $(document).ready(function() {
         $(this).find('input').prop('checked', true);
         $(this).closest('.radio-group').find('.radio-holder').removeClass('checked');
         $(this).addClass('checked');
+
+        if ($(this).find('input').val() === "attending") {
+          $(this).closest('form').find('.number-attending').fadeIn(200);
+          $(this).closest('form').find('.number-attending-label').fadeIn(200);
+          $(this).closest('form').find('.names').fadeIn(200);
+        } else {
+          $(this).closest('form').find('.number-attending').fadeOut(200);
+          $(this).closest('form').find('.number-attending-label').fadeOut(200);
+          $(this).closest('form').find('.names').fadeOut(200);
+        }
     });
-
-    // $('form input[type="radio"]').each(function() {
-    //     var valueText = $(this).closest('.radio-holder').find('span').text();
-    //     $(this).attr('value', convertToSlug(valueText));
-    // });
-    //
-    // $('form input[type="text"]').each(function() {
-    //     var attrText = $(this).attr('placeholder');
-    //     $(this).attr('name', convertToSlug(attrText));
-    // });
-
 
     // Form code
 
@@ -245,7 +244,7 @@ $(document).ready(function() {
 
             jQuery.ajax({
                 type: "POST",
-                url: "/",
+                url: "/rsvp",
                 data: $(this).serialize(),
                 datatype: "json",
                 success: function(response) {
@@ -311,6 +310,32 @@ $(document).ready(function() {
             } else {
                 $(this).removeClass('field-error');
             }
+        });
+
+        $(form).find('.validate-required-attending').each(function() {
+          if ($('input:radio[name ="rsvp"]:checked').val() === "attending") {
+            if ($(this).val() === '') {
+                $(this).addClass('field-error');
+                error = 1;
+            } else {
+                $(this).removeClass('field-error');
+            }
+          } else {
+            $(this).removeClass('field-error');
+          }
+        });
+
+        $(form).find('.number-attending').each(function() {
+          if ($('input:radio[name ="rsvp"]:checked').val() === "attending") {
+            if ($(this).val() <= 0) {
+                $(this).addClass('field-error');
+                error = 1;
+            } else {
+                $(this).removeClass('field-error');
+            }
+          } else {
+            $(this).removeClass('field-error');
+          }
         });
 
         $(form).find('.validate-email').each(function() {

@@ -1275,9 +1275,6 @@ input[type="submit"]:focus {
 .radio-holder.naked:hover span {
   border-color: #75c5b1;
 }
-.form-section {
-  margin-bottom: 60px;
-}
 @media all and (max-width: 767px) {
   .radio-holder.naked {
     margin-bottom: 20px;
@@ -1353,9 +1350,6 @@ input[type="submit"]:focus {
   margin: 0 auto;
   background: #fcfcfc;
   padding: 60px 0;
-}
-.rsvp-2 .form-section {
-  margin-bottom: 40px;
 }
 .rsvp-2 h6 {
   color: #777;

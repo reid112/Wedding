@@ -9,7 +9,7 @@
 			<ul class="slides">
 				<li>
 					<div class="background-image-holder">
-						<img alt="Background image" class="background-image" src="img/hero8.jpg">
+						<img alt="Background image" class="background-image" src="/img/hero8.jpg">
 					</div>
 
 					<div class="container">
@@ -24,7 +24,7 @@
 
 				<li>
 					<div class="background-image-holder">
-						<img alt="Background image" class="background-image" src="img/hero2.jpg">
+						<img alt="Background image" class="background-image" src="/img/hero2.jpg">
 					</div>
 
 					<div class="container">
@@ -39,7 +39,7 @@
 
 				<li>
 					<div class="background-image-holder">
-						<img alt="Background image" class="background-image" src="img/hero1.jpg">
+						<img alt="Background image" class="background-image" src="/img/hero1.jpg">
 					</div>
 
 					<div class="container">
@@ -92,7 +92,7 @@
 
 	<section class="details details-2 overlay parallax">
 		<div class="background-image-holder">
-			<img alt="Background image" class="background-image" src="img/hero2.jpg">
+			<img alt="Background image" class="background-image" src="/img/hero2.jpg">
 		</div>
 
 		<div class="container">
@@ -118,7 +118,7 @@
 			<div class="row">
 				<div class="col-sm-4 feature">
 					<a href="#">
-						<img alt="Hotel" src="img/small5.jpg">
+						<img alt="Hotel" src="/img/small5.jpg">
 					</a>
 					<h6>Sheraton Flinders</h6>
 					<p>
@@ -132,7 +132,7 @@
 
 				<div class="col-sm-4 feature">
 					<a href="#">
-						<img alt="Hotel" src="img/small6.jpg">
+						<img alt="Hotel" src="/img/small6.jpg">
 					</a>
 					<h6>Camp Crusty, Flinders</h6>
 					<p>
@@ -145,7 +145,7 @@
 
 				<div class="col-sm-4 feature">
 					<a href="#">
-						<img alt="Hotel" src="img/small7.jpg">
+						<img alt="Hotel" src="/img/small7.jpg">
 					</a>
 					<h6>Flinders Country Club</h6>
 					<p>
@@ -164,7 +164,7 @@
 	<section class="registry registry-1 registry-3 overlay-light parallax">
 
 		<div class="background-image-holder">
-			<img alt="Background image" class="background-image" src="img/hero6.jpg">
+			<img alt="Background image" class="background-image" src="/img/hero6.jpg">
 		</div>
 
 		<div class="container">
@@ -177,13 +177,13 @@
 			<div class="row">
 				<div class="col-md-4 col-md-offset-2 col-sm-6 text-center">
 					<a href="#">
-						<img alt="Registry" src="img/r1.png">
+						<img alt="Registry" src="/img/r1.png">
 					</a>
 				</div>
 
 				<div class="col-md-4 col-sm-6 text-center">
 					<a href="#">
-						<img alt="Registry" src="img/r2.png">
+						<img alt="Registry" src="/img/r2.png">
 					</a>
 				</div>
 			</div>
@@ -191,13 +191,13 @@
 			<div class="row">
 				<div class="col-md-4 col-md-offset-2 col-sm-6 text-center">
 					<a href="#">
-						<img alt="Registry" src="img/r4.png">
+						<img alt="Registry" src="/img/r4.png">
 					</a>
 				</div>
 
 				<div class="col-md-4 col-sm-6 text-center">
 					<a href="#">
-						<img alt="Registry" src="img/r3.png">
+						<img alt="Registry" src="/img/r3.png">
 					</a>
 				</div>
 			</div>
@@ -210,7 +210,7 @@
 		<div class="container">
 			<div class="row">
 				<div class="col-sm-12 text-center">
-					<h1>Say you'll be there</h1>
+					<h1><%= names %></h1>
 					<p>
 						Please let us know if you can make it by<br> September 10th at the latest!
 					</p>
@@ -221,24 +221,37 @@
 				<div class="col-sm-12 text-center">
 					<div class="form-wrapper">
 						<form id="formRsvp" class="form-email">
-							<div class="form-section">
-								<input type="email" name="email" class="validate-required" placeholder="Email">
-								<input type="text" name="names" class="validate-required" placeholder="Your Name / Names">
-								<input type="number" name="numberAttending" class="validate-required" placeholder="How many attending?">
+
+								<input type="hidden" name="guid" value="<%= guid %>" />
+
+								<input type="text" name="name" class="validate-required" placeholder="Name" value="<% if (locals.rsvp && locals.rsvp.name) { %> <%= locals.rsvp.name %> <% } %>">
+
+								<input type="email" name="email" class="validate-email" placeholder="Email" value="<% if (locals.rsvp && locals.rsvp.email) { %> <%= locals.rsvp.email %> <% } %>">
+
 								<div class="radio-group">
-									<div class="radio-holder btn checked">
+									<div class="radio-holder btn <% if (locals.rsvp && locals.rsvp.attending) { %> checked <% } %>">
 										<span>Will be there!</span>
 										<input type="radio" name="rsvp" value="attending" checked="checked">
 									</div>
-									<div class="radio-holder btn">
+									<div class="radio-holder btn <% if (locals.rsvp && !locals.rsvp.attending) { %> checked <% } %>">
 										<span>Can't make it</span>
 										<input type="radio" name="rsvp" value="not-attending">
 									</div>
 								</div>
-							</div>
-							<div class="form-section">
-								<input type="text" name="notes" placeholder="Any notes, song requests, etc?">
-							</div>
+
+								<hr />
+
+								<label class="number-attending-label">How many attending?</label>
+								<select class="form-control number-attending" name="numberAttending">
+									<% for (var i = 0; i <= number; i++) { %>
+										<option value="<%= i %>" <% if (locals.rsvp && locals.rsvp.numberAttending === i) { %> selected <% } %>><%= i %></option>
+									<% } %>
+								</select>
+
+								<input type="text" name="names" class="names validate-required-attending" placeholder="Who will be attending?" value="<% if (locals.rsvp && locals.rsvp.names) { %> <%= locals.rsvp.names %> <% } %>">
+
+								<input type="text" name="notes" placeholder="Any notes, song requests, etc?" value="<% if (locals.rsvp && locals.rsvp.notes) { %> <%= locals.rsvp.notes %> <% } %>">
+
 							<input type="submit" value="RSVP">
 							<div class="form-error">
 								<span>Please fill out all fields</span>
@@ -261,7 +274,7 @@
 						<h1>#brittani+riley</h1>
 						<h6>
 							Share the day on Instagram
-							<img src="img/instagram.png" class="instagram-logo" />
+							<img src="/img/instagram.png" class="instagram-logo" />
 						</h6>
 					</a>
 				</div>
