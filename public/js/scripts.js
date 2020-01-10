@@ -150,13 +150,20 @@ $(document).ready(function() {
             data: {guid: $(this).find('.guid-hidden').val()},
             success: function(response) {
                 if(response.status == 200){
+                  $('.form-success').fadeIn(1000);
+                  $('.form-error').fadeOut(1000);
 
+                  setTimeout(function() {
+                      $('.form-success').fadeOut(500);
+                  }, 5000);
                 } else {
-
+                  $('.form-success').fadeOut(1000);
+                  $('.form-error').fadeIn(1000);
                 }
             },
             error: function(errorObject, errorText, errorHTTP) {
-
+              $('.form-success').fadeOut(1000);
+              $('.form-error').fadeIn(1000);
             }
         });
       }
@@ -169,13 +176,20 @@ $(document).ready(function() {
             url: "/send-invites",
             success: function(response) {
                 if(response.status == 200){
+                  $('.form-success').fadeIn(1000);
+                  $('.form-error').fadeOut(1000);
 
+                  setTimeout(function() {
+                      $('.form-success').fadeOut(500);
+                  }, 5000);
                 } else {
-
+                  $('.form-success').fadeOut(1000);
+                  $('.form-error').fadeIn(1000);
                 }
             },
             error: function(errorObject, errorText, errorHTTP) {
-
+              thisForm.find('.form-success').fadeOut(1000);
+              thisForm.find('.form-error').fadeIn(1000);
             }
         });
       }
