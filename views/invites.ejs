@@ -13,7 +13,8 @@
 				<ol class="col-sm-12">
           <% invites.forEach(function(invite) { %>
             <% const rsvp = (locals.rsvps) ? locals.rsvps.find(rsvp => rsvp.guid === invite.guid) : null %>
-            <li><%= invite.names %> | <%= invite.email %> | <%= invite.number %> | <a href="<%=host%>/invite/<%= invite.guid %>">View Page</a> | <%= rsvp ? rsvp.guid : null  %></li>
+						<% const hasRsvpd = (rsvp) ? true : false%>
+            <li><% if (hasRsvpd) { %>&#10004; <% } %> <%= invite.names %> | <%= invite.email %> | <%= invite.number %> | <a href="<%=host%>/invite/<%= invite.guid %>">View Page</a> | <button type="button" name="sendInvite" class="btn-link send-invite"><input class="guid-hidden" type="hidden" value="<%= invite.guid %>" />Send Invite</button></li>
           <% }); %>
         </ol>
 			</div>

@@ -142,6 +142,26 @@ $(document).ready(function() {
 
     // Form code
 
+    $('.send-invite').click(function() {
+      if (confirm("This will send an invite email.  Do you want to continue?")) {
+        jQuery.ajax({
+            type: "POST",
+            url: "/send-invite",
+            data: {guid: $(this).find('.guid-hidden').val()},
+            success: function(response) {
+                if(response.status == 200){
+
+                } else {
+
+                }
+            },
+            error: function(errorObject, errorText, errorHTTP) {
+
+            }
+        });
+      }
+    });
+
     $('.send-invites').click(function() {
       if (confirm("This will send emails to everyone on the invite list.  Do you want to continue?")) {
         jQuery.ajax({
@@ -149,13 +169,13 @@ $(document).ready(function() {
             url: "/send-invites",
             success: function(response) {
                 if(response.status == 200){
-                  console.log("done");
+
                 } else {
-                  console.log(response);
+
                 }
             },
             error: function(errorObject, errorText, errorHTTP) {
-                console.log("error 2");
+
             }
         });
       }

@@ -78,7 +78,7 @@ router.post("/rsvp", async (req, res) => {
         from: 'rsvp@brittaniandriley.com',
         to: 'brittaniandriley@gmail.com',
         subject: (currentRsvp == null) ? 'New RSVP!' : 'Updated RSVP!',
-        text: 'Email: ' + email + '\nNames: ' + names + '\nAttending: ' + rsvpString + '\nNumber: ' + numberAttending + '\nNotes: ' + notes
+        text: 'Name: ' + name + '\nEmail: ' + email + '\nAttending: ' + rsvpBool + '\nNumber: ' + numberAttending + '\nNames: ' + names + '\nNotes: ' + notes
     };
 
     transporter.sendMail(message, function(err, info) {});
@@ -129,10 +129,47 @@ router.get("/invites", checkAuthenticated, async (req, res) => {
   try {
     const invites = await Invite.find({});
     const rsvps = await Rsvp.find();
-    console.log(rsvps);
     res.render("invites", {invites: invites, rsvps: rsvps, host: process.env.HOST});
   } catch (e) {
     res.redirect("guests");
+  }
+});
+
+router.post("/send-invite", checkAuthenticated, async (req, res) => {
+  try {
+    const guid = req.body.guid;
+    const inviteQuery = await Invite.findOne({guid: guid});
+    const invite = inviteQuery.toObject();
+
+    console.log(guid);
+    console.log(invite);
+
+    if (invite != null) {
+      const transporter = nodemailer.createTransport({
+       service: 'gmail',
+       auth: {
+              user: process.env.GMAIL_USER,
+              pass: process.env.GMAIL_PASS
+          }
+      });
+
+      const url = process.env.HOST + '/invite/' + guid
+
+      const message = {
+          from: 'rsvp@brittaniandriley.com',
+          to: invite.email,
+          subject: 'Wedding Invite - Brittani and Riley!',
+          html: invite.names +",<br/><br/>You are invited to our wedding! <a href='" + url + "'>View your invite</a> for the wedding details and use the form on the website to RSVP.<br/><br/> If you have any questions, feel free to reply to this email! <br/><br/>We hope to see you there!<br/>Brittani and Riley"
+      };
+
+      transporter.sendMail(message, function(err, info) {});
+
+      res.json({success : "Success", status : 200});
+    } else {
+      res.json({error : "Error", status : 500});
+    }
+  } catch (e) {
+    res.json({error : "Error", status : 500});
   }
 });
 
@@ -155,7 +192,7 @@ router.post("/send-invites", checkAuthenticated, async (req, res) => {
           from: 'rsvp@brittaniandriley.com',
           to: invite.email,
           subject: 'Wedding Invite - Brittani and Riley!',
-          html: invite.names +",<br/><br/>You are invited to our wedding! Please visit <a href='" + url + "'>BrittaniAndRiley.com</a> for the wedding details and use the form on the website to RSVP.<br/><br/> If you have any questions, feel free to reply to this email! <br/><br/>We hope to see you there!<br/>Brittani and Riley"
+          html: invite.names +",<br/><br/>You are invited to our wedding! <a href='" + url + "'>View your invite</a> for the wedding details and use the form on the website to RSVP.<br/><br/> If you have any questions, feel free to reply to this email! <br/><br/>We hope to see you there!<br/>Brittani and Riley"
       };
 
       transporter.sendMail(message, function(err, info) {});

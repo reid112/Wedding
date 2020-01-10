@@ -88,6 +88,16 @@ ul {
   top: 0;
   left: 0;
 }
+.overlay-2:before {
+  position: absolute;
+  content: '';
+  width: 100%;
+  height: 100%;
+  z-index: 2;
+  background: #162333;
+  top: 0;
+  left: 0;
+}
 .overlay-primary:before {
   position: absolute;
   content: '';
@@ -857,7 +867,7 @@ nav.light.scrolled .line-3 {
   }
 }
 .details-2 {
-  background: #af90a7;
+  background: #162333;
   padding: 180px 0;
   transition: all 0.3s ease;
   -webkit-transition: all 0.3s ease;
@@ -1017,20 +1027,24 @@ nav.light.scrolled .line-3 {
 .gallery-2:before {
   opacity: .6;
 }
-.gallery-2 .instafeed,
-.gallery-2 .instafeed ul {
+.gallery-3 {
+  padding: 0;
+  height: 600px;
+}
+.gallery-3 .instafeed,
+.gallery-3 .instafeed ul {
   position: absolute;
   width: 100%;
   height: 100%;
   z-index: 1;
 }
-.gallery-2 .instafeed li {
+.gallery-3 .instafeed li {
   width: 20%;
   float: left;
   background-size: cover !important;
   height: 50%;
 }
-.gallery-2 .instafeed li:nth-child(n+11) {
+.gallery-3 .instafeed li:nth-child(n+11) {
   display: none;
 }
 .gallery-2 .container {
@@ -1052,19 +1066,38 @@ nav.light.scrolled .line-3 {
   color: #fff;
   cursor: pointer;
 }
+.gallery-3 .container {
+  position: relative;
+  top: 50%;
+  transform: translateY(-50%);
+  -webkit-transform: translateY(-50%);
+  -moz-transform: translateY(-50%);
+  z-index: 3;
+}
+.gallery-3 h1 {
+  font-size: 120px;
+  color: #fff;
+  font-weight: 100;
+  line-height: 128px;
+  cursor: pointer;
+}
+.gallery-3 h6 {
+  color: #fff;
+  cursor: pointer;
+}
 @media all and (max-width: 1300px) {
-  .gallery-2 .instafeed li {
+  .gallery-3 .instafeed li {
     width: 25%;
   }
-  .gallery-2 .instafeed li:nth-child(n+9) {
+  .gallery-3 .instafeed li:nth-child(n+9) {
     display: none;
   }
 }
 @media all and (max-width: 990px) {
-  .gallery-2 .instafeed li {
+  .gallery-3 .instafeed li {
     width: 33.33333%;
   }
-  .gallery-2 .instafeed li:nth-child(n+7) {
+  .gallery-3 .instafeed li:nth-child(n+7) {
     display: none;
   }
 }
@@ -1076,10 +1109,17 @@ nav.light.scrolled .line-3 {
     line-height: 68px;
     margin-bottom: 8px;
   }
-  .gallery-2 .instafeed li {
+  .gallery-3 h1 {
+    font-size: 60px;
+    max-width: 100%;
+    font-weight: 300;
+    line-height: 68px;
+    margin-bottom: 8px;
+  }
+  .gallery-3 .instafeed li {
     width: 50%;
   }
-  .gallery-2 .instafeed li:nth-child(n+5) {
+  .gallery-3 .instafeed li:nth-child(n+5) {
     display: none;
   }
 }
