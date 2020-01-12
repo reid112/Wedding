@@ -259,6 +259,15 @@ router.delete('/logout', (req, res) => {
   res.redirect('/login');
 });
 
+router.use(function(req, res, next){
+  res.status(404);
+
+  if (req.accepts('html')) {
+    res.render('pages/404');
+    return;
+  }
+});
+
 function checkAuthenticated(req, res, next) {
   if (req.isAuthenticated()) {
     return next()
