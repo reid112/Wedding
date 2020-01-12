@@ -29,7 +29,7 @@ router.get("/invite/:guid", async (req, res) => {
     if (invite == null) {
       res.send("");
     } else {
-      res.render("home", {rsvp: rsvp, guid: invite.guid, names: invite.names, number: invite.number})
+      res.render("pages/home", {rsvp: rsvp, guid: invite.guid, names: invite.names, number: invite.number})
     }
   } catch (e) {
     res.send("");
@@ -102,36 +102,42 @@ router.post("/rsvp", async (req, res) => {
     }
   } catch (e) {
     res.send(err)
+    console.log(e);
   }
 });
 
-router.get("/guests", checkAuthenticated, (req, res) => {
-  Rsvp.find({}, function(err, rsvps) {
-      var attending = [];
-      var notAttending = [];
+router.get("/guests", checkAuthenticated, async (req, res) => {
+  try {
+    var rsvps = await Rsvp.find({});
+    var attending = [];
+    var notAttending = [];
 
-      rsvps.forEach(function(rsvp) {
-        if (rsvp.attending) {
-          attending.push(rsvp);
-        } else {
-          notAttending.push(rsvp);
-        }
-      });
-
-      res.render("guests", {
-            attending: attending,
-            notAttending: notAttending
-        })
+    rsvps.forEach(function(rsvp) {
+      if (rsvp.attending) {
+        attending.push(rsvp);
+      } else {
+        notAttending.push(rsvp);
+      }
     });
+
+    res.render("pages/auth/guests", {
+      attending: attending,
+      notAttending: notAttending
+    });
+  } catch (e) {
+    res.redirect("login");
+    console.log(e);
+  }
 });
 
 router.get("/invites", checkAuthenticated, async (req, res) => {
   try {
     const invites = await Invite.find({});
     const rsvps = await Rsvp.find();
-    res.render("invites", {invites: invites, rsvps: rsvps, host: process.env.HOST});
+    res.render("pages/auth/invites", {invites: invites, rsvps: rsvps, host: process.env.HOST});
   } catch (e) {
     res.redirect("guests");
+    console.log(e);
   }
 });
 
@@ -170,6 +176,7 @@ router.post("/send-invite", checkAuthenticated, async (req, res) => {
     }
   } catch (e) {
     res.json({error : "Error", status : 500});
+    console.log(e);
   }
 });
 
@@ -206,7 +213,7 @@ router.post("/send-invites", checkAuthenticated, async (req, res) => {
 });
 
 router.get("/add-invite", checkAuthenticated, (req, res) => {
-  res.render("addInvite");
+  res.render("pages/auth/addInvite");
 });
 
 router.post("/add-invite", checkAuthenticated, (req, res) => {
@@ -234,7 +241,7 @@ router.post("/add-invite", checkAuthenticated, (req, res) => {
 });
 
 router.get("/login", checkNotAuthenticated, (req, res) => {
-  res.render("login");
+  res.render("pages/login");
 });
 
 router.post("/login", checkNotAuthenticated, passport.authenticate('local', {
@@ -244,7 +251,7 @@ router.post("/login", checkNotAuthenticated, passport.authenticate('local', {
 }));
 
 router.get("/logout", checkAuthenticated, (req, res) => {
-  res.render("logout");
+  res.render("pages/auth/logout");
 });
 
 router.delete('/logout', (req, res) => {
