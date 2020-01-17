@@ -4,9 +4,7 @@ const passport = require('passport');
 const uuid = require('uuid/v1');
 const router = express.Router();
 
-const User = require('./models/User');
-const Rsvp = require('./models/Rsvp');
-const Invite = require('./models/Invite');
+const { Invite, Rsvp } = require('./models');
 
 router.use(function timeLog(req, res, next) {
   next();
