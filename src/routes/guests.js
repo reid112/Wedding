@@ -1,5 +1,5 @@
 const express = require('express');
-const { checkAuthenticated } = require('../auth-helper');
+const { checkAuthenticated } = require('../utils/auth-helper');
 const { Rsvp } = require('../models');
 const router = express.Router();
 

@@ -1,5 +1,6 @@
 const express = require('express');
-const nodemailer = require('nodemailer');
+const sendEmail = require('../utils/send-email');
+const { createRsvpEmail } = require('../utils/create-email');
 const { Rsvp } = require('../models');
 const router = express.Router();
 
@@ -15,60 +16,48 @@ router.post("/", async (req, res) => {
 
     try {
         const rsvpQuery = await Rsvp.findOne({guid: guid});
-        const currentRsvp = (rsvpQuery != null) ? rsvpQuery.toObject() : null;
+        const isNewRsvp = (rsvpQuery == null);
 
         let rsvpBool = false
 
         if (rsvpString == "attending") {
-        rsvpBool = true
+            rsvpBool = true
         }
 
         const rsvp = {
-        guid : guid,
-        name : name,
-        email : email,
-        attending : rsvpBool,
-        numberAttending : numberAttending,
-        names : names,
-        notes : notes
+            guid : guid,
+            name : name,
+            email : email,
+            attending : rsvpBool,
+            numberAttending : numberAttending,
+            names : names,
+            notes : notes
         };
 
-        const transporter = nodemailer.createTransport({
-        service: 'gmail',
-        auth: {
-                user: process.env.GMAIL_USER,
-                pass: process.env.GMAIL_PASS
-            }
-        });
+        sendEmail(createRsvpEmail({
+            ...rsvp,
+            isNewRsvp,
+        }));
 
-        const message = {
-            from: 'rsvp@brittaniandriley.com',
-            to: 'brittaniandriley@gmail.com',
-            subject: (currentRsvp == null) ? 'New RSVP!' : 'Updated RSVP!',
-            text: 'Name: ' + name + '\nEmail: ' + email + '\nAttending: ' + rsvpBool + '\nNumber: ' + numberAttending + '\nNames: ' + names + '\nNotes: ' + notes
-        };
-
-        transporter.sendMail(message, function(err, info) {});
-
-        if (currentRsvp == null) {
-        Rsvp.create(rsvp, function(err, rsvp) {
-            if (err){
-                res.send(err)
-            } else {
-                res.json({success : "Success", status : 200});
-            }
-        });
+        if (isNewRsvp) {
+            Rsvp.create(rsvp, function(err, rsvp) {
+                if (err){
+                    res.send(err)
+                } else {
+                    res.json({success : "Success", status : 200});
+                }
+            });
         } else {
-        Rsvp.replaceOne(rsvp, function(err, rsvp) {
-            if (err){
-                res.send(err)
-            } else {
-                res.json({success : "Success", status : 200});
-            }
-        });
+            Rsvp.replaceOne(rsvp, function(err, rsvp) {
+                if (err){
+                    res.send(err)
+                } else {
+                    res.json({success : "Success", status : 200});
+                }
+            });
         }
     } catch (e) {
-        res.send(err)
+        res.send(e)
         console.log(e);
     }
 });

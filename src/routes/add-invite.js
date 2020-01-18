@@ -1,6 +1,6 @@
 const express = require('express');
 const uuid = require('uuid/v1');
-const { checkAuthenticated } = require('../auth-helper');
+const { checkAuthenticated } = require('../utils/auth-helper');
 const { Invite } = require('../models');
 const router = express.Router();
 

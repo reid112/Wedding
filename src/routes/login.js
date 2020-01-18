@@ -1,6 +1,6 @@
 const express = require('express');
 const passport = require('passport');
-const { checkNotAuthenticated } = require('../auth-helper');
+const { checkNotAuthenticated } = require('../utils/auth-helper');
 const router = express.Router();
 
 // GET - login homepage

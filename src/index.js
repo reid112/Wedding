@@ -9,7 +9,8 @@ const methodOverride = require('method-override');
 const path = require('path');
 const compression = require('compression');
 const helmet = require('helmet');
-const initializePassport = require('./passport-config');
+const initializePassport = require('./utils/passport-config');
+const { User } = require('./models');
 const { 
   addInviteRouter,
   guestsRouter,
@@ -26,8 +27,6 @@ const {
 if (process.env.NODE_ENV !== 'production') {
   require('dotenv').config({ path: path.join(__dirname, '../.env') });
 }
-
-const { User } = require('./models');
 
 initializePassport(
   passport,
