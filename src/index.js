@@ -24,9 +24,7 @@ const {
   sendInvitesRouter
  } = require('./routes');
 
-if (process.env.NODE_ENV !== 'production') {
-  require('dotenv').config({ path: path.join(__dirname, '../.env') });
-}
+require('dotenv').config({ path: path.join(__dirname, '../.env') });
 
 initializePassport(
   passport,
@@ -76,9 +74,4 @@ app.use(function(req, res){
 const url = process.env.DB_URL;
 mongoose.connect(url, {useUnifiedTopology: true, useNewUrlParser: true,});
 
-let port = process.env.PORT;
-if (port == null || port == "") {
-  port = 3000
-}
-
-app.listen(port);
+app.listen(3000);

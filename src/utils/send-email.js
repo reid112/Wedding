@@ -12,6 +12,7 @@ const sendEmail = (message) => {
     transporter.sendMail(message, function(err, info) {
         if (err) {
             console.log(err);
+            // TODO: Log errors somehow/somewhere so we know what email did not send so that we can resend
         }
     });
 };
