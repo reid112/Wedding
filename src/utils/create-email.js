@@ -8,7 +8,7 @@ const createRsvpEmail = ({ isNewRsvp, name, email, attending, numberAttending, n
     `;
 
     return Object.freeze({
-        from: '"RSVP" <rsvp@brittaniandriley.com>',
+        from: 'RSVP <rsvp@brittaniandriley.com>',
         to: 'brittaniandriley@gmail.com',
         subject: (isNewRsvp) ? 'New RSVP!' : 'Updated RSVP!',
         html: emailText
@@ -26,7 +26,7 @@ const createInviteEmail = ({ guid, email, names }) => {
     `;
 
     return Object.freeze({
-        from: '"Brittani and Riley" <brittaniandriley@gmail.com>',
+        from: 'Brittani and Riley <brittaniandriley@gmail.com>',
         to: email,
         subject: 'Wedding Invite - Brittani and Riley!',
         html: emailText

@@ -13,7 +13,7 @@ router.post("/", checkAuthenticated, async (req, res) => {
     const invite = inviteQuery.toObject();
 
     if (invite != null) {
-      sendEmail(createInviteEmail(invite));
+      await sendEmail(createInviteEmail(invite));
       res.json({success : "Success", status : 200});
     } else {
       res.json({error : "Error", status : 500});
