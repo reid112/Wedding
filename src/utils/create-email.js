@@ -33,7 +33,17 @@ const createInviteEmail = ({ guid, email, names }) => {
     });
 };
 
+const createCustomEmail = (email, subject, message) => {
+    return Object.freeze({
+        from: 'Brittani and Riley <brittaniandriley@gmail.com>',
+        to: email,
+        subject: subject,
+        html: message
+    });
+}
+
 module.exports = {
     createRsvpEmail,
-    createInviteEmail
+    createInviteEmail,
+    createCustomEmail
 };

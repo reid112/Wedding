@@ -21,7 +21,8 @@ const {
   logoutRouter,
   rsvpRouter,
   sendInviteRouter,
-  sendInvitesRouter
+  sendInvitesRouter,
+  sendCustomEmailRouter
  } = require('./routes');
 
 require('dotenv').config({ path: path.join(__dirname, '../.env') });
@@ -60,6 +61,7 @@ app.use('/logout', logoutRouter);
 app.use('/rsvp', rsvpRouter);
 app.use('/send-invite', sendInviteRouter);
 app.use('/send-invites', sendInvitesRouter);
+app.use('/send-custom-email', sendCustomEmailRouter);
 
 app.use(function(req, res){
   res.status(404);

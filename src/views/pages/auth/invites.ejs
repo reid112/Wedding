@@ -32,9 +32,43 @@
       <div class="row">
         <div class="col-sm-12">
             <button type="button" name="sendInvites" class="send-invites">Send Invite Emails</button>
+            <button type="button" name="sendCustomEmail" data-toggle="modal" data-target="#customEmailModal">Send Custom Email</button>
         </div>
       </div>
-		</div>
+    </div>
+    
+    <!-- Custom Email Modal -->
+    <div class="modal" id="customEmailModal">
+      <div class="modal-dialog">
+        <div class="modal-content">
+
+          <!-- Modal Header -->
+          <div class="modal-header">
+            <h4 class="modal-title">Send Email</h4>
+          </div>
+
+          <!-- Modal body -->
+          <div class="modal-body">
+            <b>This will send to all invites!</b>
+            <div class="form-group">
+              <label for="subject">Subject:</label>
+              <input type="text" class="form-control custom-subject" id="subject">
+            </div>
+            <div class="form-group">
+              <label for="comment">Message:</label>
+              <textarea class="form-control custom-message" rows="5" id="message"></textarea>
+            </div>
+          </div>
+              
+          <!-- Modal footer -->
+          <div class="modal-footer">
+            <button type="button" data-dismiss="modal" class="send-custom-email">Send</button>
+            <button type="button" data-dismiss="modal">Close</button>
+          </div>
+
+        </div>
+      </div>
+    </div>
 	</section>
 
 <%- include("../../partials/footer") -%>

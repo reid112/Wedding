@@ -8,6 +8,7 @@ const logoutRouter = require('./logout');
 const rsvpRouter = require('./rsvp');
 const sendInviteRouter = require('./send-invite');
 const sendInvitesRouter = require('./send-invites');
+const sendCustomEmailRouter = require('./send-custom-email')
 
 module.exports = {
     addInviteRouter,
@@ -19,7 +20,8 @@ module.exports = {
     logoutRouter,
     rsvpRouter,
     sendInviteRouter,
-    sendInvitesRouter
+    sendInvitesRouter,
+    sendCustomEmailRouter
 };
 
 

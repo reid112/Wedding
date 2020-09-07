@@ -188,12 +188,37 @@ $(document).ready(function() {
                 }
             },
             error: function(errorObject, errorText, errorHTTP) {
-              thisForm.find('.form-success').fadeOut(1000);
-              thisForm.find('.form-error').fadeIn(1000);
+                $('.form-success').fadeOut(1000);
+                $('.form-error').fadeIn(1000);
             }
         });
       }
     });
+
+    $('.send-custom-email').click(function() {
+        jQuery.ajax({
+            type: "POST",
+            url: "/send-custom-email",
+            data: { subject: $('.custom-subject').val(), message: $('.custom-message').val() },
+            success: function(response) {
+                if(response.status == 200){
+                  $('.form-success').fadeIn(1000);
+                  $('.form-error').fadeOut(1000);
+
+                  setTimeout(function() {
+                      $('.form-success').fadeOut(500);
+                  }, 5000);
+                } else {
+                  $('.form-success').fadeOut(1000);
+                  $('.form-error').fadeIn(1000);
+                }
+            },
+            error: function(errorObject, errorText, errorHTTP) {
+                $('.form-success').fadeOut(1000);
+                $('.form-error').fadeIn(1000);
+            }
+        });
+      });
 
     $('form.form-invite').submit(function(e) {
 
