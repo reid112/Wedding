@@ -6,4 +6,9 @@ This is my first real Node.js project and my first web development project in ma
 ### Preview
 To see a preview of what an invite will look link, [click here](https://brittaniandriley.com/invite/650156f0-44fe-11ea-a9b7-11eef892a577)
 
+### Dev Env
+**Start Mongo Server**
+- mongod --dbpath ~/data/db
 
+**Start Node Server**
+- nodemon src
