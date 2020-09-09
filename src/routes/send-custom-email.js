@@ -13,10 +13,8 @@ router.post("/", checkAuthenticated, async (req, res) => {
     const invites = await Invite.find({});
 
     invites.forEach(function (invite) {
-        console.log(invite.email);
-        console.log(subject);
-        console.log(message);
-        sendEmail(createCustomEmail(invite.email, subject, message));
+        let fullMessage = invite.names + ',<br/><br/>' + message
+        sendEmail(createCustomEmail(invite.email, subject, fullMessage));
     });
 
     res.json({success : "Success", status : 200});
