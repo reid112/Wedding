@@ -4,7 +4,7 @@ Code for wedding website using a template purchased from [Theme Forest](https://
 This is my first real Node.js project and my first web development project in many years so it is not the nicest code!
 
 ### Preview
-To see a preview of what an invite will look link, [click here](https://brittaniandriley.com/invite/650156f0-44fe-11ea-a9b7-11eef892a577)
+To see a preview of what an invite will look link, [click here](https://brittaniandriley.com/invite/d38abbd0-d2aa-11eb-bb7c-45f47554a212)
 
 ### Dev Env
 **Start Mongo Server**
