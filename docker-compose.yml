@@ -1,0 +1,16 @@
+version: '3'
+
+networks:
+  wedding_app:
+    external: true
+
+services:
+  wedding:
+    container_name: wedding_app
+    image: wedding:latest
+    ports:
+      - "8081:3000"
+    env_file:
+      - .env
+    networks:
+      - wedding_app
